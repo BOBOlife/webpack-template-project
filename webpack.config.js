@@ -25,14 +25,40 @@ module.exports = {
           options: { presets: ['@babel/preset-typescript'] }
         }
       },
+      // {
+      //   test: /\.s[ac]ss$/i,
+      //   // use: ["style-loader", "css-loader"] // 语义上 style-loader(css-loader(css)) 
+      //   use: [
+      //     // 根据运行环境判断用何 loader
+      //     // style-loader 将css内容注入到页面的<style>标签里 使样式生效
+      //     ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,   // 不可与style-loader 混用   ！！！ 需和html-webpack-plugin 同时使用, 产物才可link 标签 插入 html
+      //     'css-loader', // 将css 代码 放到 js 的文件里面
+      //     'sass-loader' // less-loader stylus-loader 一样  （test匹配文件 记得修改）
+      //   ]
+      // },
+    
       {
-        test: /\.css$/i,
-        // use: ["style-loader", "css-loader"] // 语义上 style-loader(css-loader(css)) 
+        test: /\.s[ca]ss$/,
         use: [
-          // 根据运行环境判断用何 loader
-          ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,  // 不可与style-loader 混用   ！！！ 需和html-webpack-plugin 同时使用, 产物才可link 标签 插入 html
-          'css-loader'
-        ]
+          "style-loader", 
+          {
+            loader: "css-loader",            
+            options: {
+              importLoaders: 1
+            }
+          }, 
+          // {
+          //   loader: "postcss-loader",
+          //   options: {
+          //     postcssOptions: {
+          //       // 添加 autoprefixer 插件 可以为css 代码自动添加浏览器的前缀
+          //       plugins: [require("autoprefixer")],
+          //     },
+          //   },
+          // }
+          "postcss-loader",
+          'sass-loader'  // postcss  和 预处理器 非互斥的关系
+        ],
       }
     ]
   },

@@ -1,4 +1,5 @@
-import './index.css'
+// import './index.css'
+import './main.scss'
 
 const node = document.createElement('span')
 
