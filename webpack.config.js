@@ -5,13 +5,18 @@ const ESLintPlugin = require('eslint-webpack-plugin')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 讲css变成文件 用link 方式引用
 const HTMLWebpackPlugin = require('html-webpack-plugin')
+const { VueLoaderPlugin } = require("vue-loader")
 
 const ENV = process.env.NODE_ENV
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/index.js',
   mode: 'development',
   devtool: false,
+  devServer: {
+    hot: true,
+    open: true,
+  },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
@@ -37,34 +42,60 @@ module.exports = {
       //   ]
       // },
     
+      // {
+      //   test: /\.s[ca]ss$/,
+      //   use: [
+      //     "style-loader", 
+      //     {
+      //       loader: "css-loader",            
+      //       options: {
+      //         importLoaders: 1
+      //       }
+      //     }, 
+      //     // {
+      //     //   loader: "postcss-loader",
+      //     //   options: {
+      //     //     postcssOptions: {
+      //     //       // 添加 autoprefixer 插件 可以为css 代码自动添加浏览器的前缀
+      //     //       plugins: [require("autoprefixer")],
+      //     //     },
+      //     //   },
+      //     // }
+      //     "postcss-loader",
+      //     'sass-loader'  // postcss  和 预处理器 非互斥的关系
+      //   ],
+      // },
       {
-        test: /\.s[ca]ss$/,
+        test: /\.css$/,
         use: [
-          "style-loader", 
-          {
-            loader: "css-loader",            
-            options: {
-              importLoaders: 1
-            }
-          }, 
-          // {
-          //   loader: "postcss-loader",
-          //   options: {
-          //     postcssOptions: {
-          //       // 添加 autoprefixer 插件 可以为css 代码自动添加浏览器的前缀
-          //       plugins: [require("autoprefixer")],
-          //     },
-          //   },
-          // }
-          "postcss-loader",
-          'sass-loader'  // postcss  和 预处理器 非互斥的关系
-        ],
+          "style-loader",
+          "css-loader"
+        ]
+      }, 
+      {
+        test: /\.vue$/,
+        use: ["vue-loader"],
       }
     ]
   },
   plugins: [
     new ESLintPlugin({ extensions: ['.js', '.ts'] }),
     new MiniCssExtractPlugin(),
-    new HTMLWebpackPlugin()
+    new HTMLWebpackPlugin({
+    templateContent: `
+    <!DOCTYPE html>
+    <html>
+        <head>
+          <meta charset="utf-8">
+          <meta http-equiv="Content-Type" content="text/html" >
+          <title>Webpack App</title>
+        </head>
+        <body>
+          <div id="app"></div>
+        </body>
+      </html>
+    `
+  }),
+    new VueLoaderPlugin()
   ]
 }
