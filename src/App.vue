@@ -1,5 +1,5 @@
 
-<script>
+<script lang="typescript">
 export default {
   data () {
     return {
@@ -15,9 +15,11 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+  $border: 1px solid black; 
   .Foo {
     font-weight: bold;
     color: green;
+    border: $border;
   } 
 </style>

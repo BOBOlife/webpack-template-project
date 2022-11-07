@@ -2,9 +2,10 @@
   "name": "webpack-template-project",
   "version": "0.0.1",
   "description": "",
-  "main": "index.ts",
+  "main": "./src/index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "serve": "webpack serve"
   },
   "keywords": [],
   "author": "",
@@ -25,9 +26,12 @@
     "mini-css-extract-plugin": "^2.6.1",
     "postcss": "^8.4.18",
     "postcss-loader": "^7.0.1",
+    "pug": "^3.0.2",
+    "pug-plain-loader": "^1.1.0",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
     "style-loader": "^3.3.1",
+    "ts-loader": "^9.4.1",
     "typescript": "^4.8.4",
     "vue-loader": "^17.0.1",
     "webpack": "^5.74.0",

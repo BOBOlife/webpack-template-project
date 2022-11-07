@@ -23,13 +23,27 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.ts$/,
-        use: {
-          loader: 'babel-loader',
-          options: { presets: ['@babel/preset-typescript'] }
-        }
-      },
+      // {
+      //   test: /\.ts$/,
+      //   use: [
+      //     // {
+      //     //   loader: 'babel-loader',
+      //     //   options: { presets: ['@babel/preset-typescript']}
+      //     // },
+      //     {
+      //       loader:"ts-loader",
+      //       options: {
+      //       // 指定特定的ts编译配置，为了区分脚本的ts配置
+      //         configFile: path.resolve(__dirname, './tsconfig.json'),
+      //         // appendTsSuffixTo: [/\.vue$/]
+              
+      //       }
+      //     }]
+      //   // use: {
+      //   //   loader: 'babel-loader',
+      //   //   options: { presets: ['@babel/preset-typescript'] }
+      //   // }
+      // },
       // {
       //   test: /\.s[ac]ss$/i,
       //   // use: ["style-loader", "css-loader"] // 语义上 style-loader(css-loader(css)) 
@@ -66,21 +80,35 @@ module.exports = {
       //   ],
       // },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         use: [
           "style-loader",
-          "css-loader"
+          "css-loader",
+          "sass-loader"
         ]
-      }, 
+      },
+      //  * <template> 的处理规则会稍微不同，因为绝大部分 Webpack 模板类 Loader 都会返回一个模板函数，
+      //  * 而不是编译好的 HTML 片段，这与 Vue SFC 将 <template> 编译为 render 函数的规则相冲突，
+      //  * 此时通常需要使用一个返回原始的 HTML 字符串的 loader，例如使用 pug-plain-loader，而不是 pug-loader
+      //  * 
+      {
+        test: /\.pug$/,
+        use:  ["pug-plain-loader"] 
+      }
       {
         test: /\.vue$/,
         use: ["vue-loader"],
+      },
+      {
+        test: /\.ts$/,
+        use: ["ts-loader"]
       }
     ]
   },
   plugins: [
-    new ESLintPlugin({ extensions: ['.js', '.ts'] }),
-    new MiniCssExtractPlugin(),
+    // new ESLintPlugin({ extensions: ['.js', '.ts'] }),
+    // new MiniCssExtractPlugin(),
+    new VueLoaderPlugin(),
     new HTMLWebpackPlugin({
     templateContent: `
     <!DOCTYPE html>
@@ -96,6 +124,5 @@ module.exports = {
       </html>
     `
   }),
-    new VueLoaderPlugin()
   ]
 }
